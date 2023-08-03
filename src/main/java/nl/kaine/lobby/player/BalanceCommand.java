@@ -1,4 +1,4 @@
-package nl.kaine.lobby.scoreboard;
+package nl.kaine.lobby.player;
 
 import nl.kaine.lobby.Lobby;
 import org.bukkit.command.Command;
@@ -9,22 +9,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-public class ScoreboardCommand implements CommandExecutor, TabCompleter {
+public class BalanceCommand implements CommandExecutor, TabCompleter {
 
     Lobby plugin;
-    public ScoreboardCommand(Lobby plugin) {
+
+    public BalanceCommand(Lobby plugin) {
         this.plugin = plugin;
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //Check command
-        if (!command.getName().equalsIgnoreCase("scoreboard"))
+        if (!command.getName().equalsIgnoreCase("saldo"))
             return false;
         Player player = null;
 
@@ -33,28 +31,23 @@ public class ScoreboardCommand implements CommandExecutor, TabCompleter {
             player = (Player) sender;
             player.getUniqueId();
         }
-
-        // /scoreboard
-        // no args = help message
         if (args.length == 0) {
             sender.sendMessage(("------------------- [Lobby] -------------------"));
             sender.sendMessage(("De volgende commando's zijn beschikbaar:"));
-            sender.sendMessage(("/scoreboard <toggle>"));
+            sender.sendMessage(("/saldo <player>"));
+            sender.sendMessage(("/saldo add <player> <amount>"));
+            sender.sendMessage(("/saldo remove <player> <amount>"));
             sender.sendMessage(("----------------------------------------------"));
 
             return true;
         }
-
-        if (args[0].equalsIgnoreCase("toggle")) {
-            ScoreboardListener.toggleScoreboard(Objects.requireNonNull(player));
-        }
         return true;
     }
-    // /scoreboard toggle
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (args[0].length() == 1) {
-            return StringUtil.copyPartialMatches(args[0], List.of("toggle"), new ArrayList<>());
+        if (args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], List.of("add", "remove"), new ArrayList<>());
         }
         return new ArrayList<>();
     }

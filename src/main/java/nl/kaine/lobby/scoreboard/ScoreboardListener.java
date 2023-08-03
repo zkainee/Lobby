@@ -29,6 +29,10 @@ public class ScoreboardListener implements Listener {
     }
     static ArrayList<UUID> toggle = new ArrayList<>();
 
+    /**
+     * Executed when a player toggles their scorebord with: /scoreboard toggle
+     * @param player
+     */
     public static void toggleScoreboard(Player player) {
         if (toggle.contains(player.getUniqueId())) {
             toggle.remove(player.getUniqueId());
@@ -39,6 +43,10 @@ public class ScoreboardListener implements Listener {
         }
     }
 
+    /**
+     * Creates scoreboard for a player
+     * @param player
+     */
     public static void setScoreboard(Player player) {
 
         Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();

@@ -1,5 +1,6 @@
 package nl.kaine.lobby;
 
+import nl.kaine.lobby.player.BalanceCommand;
 import nl.kaine.lobby.scoreboard.ScoreboardCommand;
 import nl.kaine.lobby.scoreboard.ScoreboardListener;
 import org.bukkit.Bukkit;
@@ -13,7 +14,7 @@ public class Lobby extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Lobby plugin enabled.");
 
-        //.requireNonNull(getCommand("money")).setExecutor(new );
+        Objects.requireNonNull(getCommand("saldo")).setExecutor(new BalanceCommand(this));
         Objects.requireNonNull(getCommand("scoreboard")).setExecutor(new ScoreboardCommand(this));
         //Objects.requireNonNull(getCommand("fly")).setExecutor(new );
 
