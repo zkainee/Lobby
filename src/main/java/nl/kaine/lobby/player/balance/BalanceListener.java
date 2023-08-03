@@ -1,4 +1,4 @@
-package nl.kaine.lobby.player;
+package nl.kaine.lobby.player.balance;
 
 import org.bukkit.event.Listener;
 

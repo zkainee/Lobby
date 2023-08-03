@@ -20,7 +20,6 @@ public class ScoreboardCommand implements CommandExecutor, TabCompleter {
         this.plugin = plugin;
     }
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //Check command

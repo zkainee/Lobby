@@ -1,4 +1,4 @@
-package nl.kaine.lobby.player;
+package nl.kaine.lobby.player.balance;
 
 import nl.kaine.lobby.Lobby;
 import org.bukkit.command.Command;
