@@ -2,8 +2,8 @@ package nl.kaine.lobby;
 
 import nl.kaine.lobby.database.SQL;
 import nl.kaine.lobby.player.ConnectionListener;
-import nl.kaine.lobby.player.balance.BalanceCommand;
 import nl.kaine.lobby.player.PlayerManager;
+import nl.kaine.lobby.player.balance.BalanceCommand;
 import nl.kaine.lobby.scoreboard.ScoreboardCommand;
 import nl.kaine.lobby.scoreboard.ScoreboardListener;
 import org.bukkit.Bukkit;
@@ -46,5 +46,6 @@ public class Lobby extends JavaPlugin {
     }
 
     public PlayerManager getPlayerManager() { return playerManager; }
+
     public SQL getDatabase() { return SQL; }
 }

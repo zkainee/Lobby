@@ -1,13 +1,14 @@
 package nl.kaine.lobby.player;
 
 import nl.kaine.lobby.Lobby;
+import org.bukkit.event.Listener;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class PlayerProfile {
+public class PlayerProfile implements Listener{
 
     private Lobby lobby;
 

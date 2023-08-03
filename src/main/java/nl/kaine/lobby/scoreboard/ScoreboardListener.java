@@ -1,6 +1,7 @@
 package nl.kaine.lobby.scoreboard;
 
 import nl.kaine.lobby.Lobby;
+import nl.kaine.lobby.player.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,17 +13,19 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
 public class ScoreboardListener implements Listener {
     //Instance plugin
-    Lobby plugin;
+    static Lobby plugin;
+    static PlayerProfile profile;
 
-    public ScoreboardListener(Lobby plugin) {
-        this.plugin = plugin;
-    }
+    private static UUID uuid;
+    public ScoreboardListener(Lobby plugin) { this.plugin = plugin; }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent joinEvent) {
         toggleScoreboard(joinEvent.getPlayer());
@@ -66,7 +69,7 @@ public class ScoreboardListener implements Listener {
 
         empty.setScore(4);
 
-        Score playerMoney = obj.getScore(ChatColor.WHITE + "Saldo: " );
+        Score playerMoney = obj.getScore(ChatColor.WHITE + "Saldo: ");
         playerMoney.setScore(5);
 
         empty.setScore(6);
