@@ -1,0 +1,8 @@
+name: Lobby
+version: '${project.version}'
+main: nl.kaine.lobby.Lobby
+api-version: '1.19'
+description: 'Lobby plugin to enhance the minecraft experience'
+commands:
+  scoreboard:
+    description: 'Toggle playersided scoreboard'
