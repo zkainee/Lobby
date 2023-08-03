@@ -53,7 +53,7 @@ public class ScoreboardCommand implements CommandExecutor, TabCompleter {
     // /scoreboard toggle
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (args[0].length() == 1) {
+        if (args.length == 1) {
             return StringUtil.copyPartialMatches(args[0], List.of("toggle"), new ArrayList<>());
         }
         return new ArrayList<>();
