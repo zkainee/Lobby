@@ -2,6 +2,8 @@ package nl.kaine.lobby;
 
 import nl.kaine.lobby.database.SQL;
 import nl.kaine.lobby.database.ConnectionListener;
+import nl.kaine.lobby.menu.ServerSelector;
+import nl.kaine.lobby.menu.listener.ServerClickListener;
 import nl.kaine.lobby.player.PlayerManager;
 import nl.kaine.lobby.player.balance.BalanceCommand;
 import nl.kaine.lobby.scoreboard.ScoreboardCommand;
@@ -16,6 +18,8 @@ public class Lobby extends JavaPlugin {
 
     private SQL SQL;
     private PlayerManager playerManager;
+
+    private ServerSelector serverSelector;
 
     @Override
     public void onEnable() {
@@ -35,8 +39,10 @@ public class Lobby extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectionListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new ServerClickListener(this), this);
 
         playerManager = new PlayerManager();
+        serverSelector = new ServerSelector(this);
 
     }
     @Override
