@@ -25,6 +25,7 @@ public class ScoreboardCommand implements CommandExecutor, TabCompleter {
         //Check command
         if (!command.getName().equalsIgnoreCase("scoreboard"))
             return false;
+
         Player player = null;
 
         //Check if sender is a player
@@ -47,20 +48,15 @@ public class ScoreboardCommand implements CommandExecutor, TabCompleter {
         if (args[0].equalsIgnoreCase("toggle")) {
             if (player != null) {
                 try {
-                    PlayerProfile profile = null;
-                    try {
-                        profile = new PlayerProfile(plugin, player.getUniqueId());
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    ScoreboardListener.setScoreboard(player, profile);
+                    PlayerProfile profile = new PlayerProfile(plugin, player.getUniqueId());
                     ScoreboardListener.toggleScoreboard(player, profile);
-                } catch (RuntimeException e) {
+                } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
     // /scoreboard toggle
     @Override

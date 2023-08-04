@@ -15,6 +15,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +25,11 @@ public class ScoreboardListener implements Listener {
 
     public ScoreboardListener(Lobby plugin) { this.plugin = plugin; }
 
+    // Store original scoreboard for each player
+    static HashMap<UUID, Scoreboard> originalScoreboards = new HashMap<>();
+
+    static ArrayList<UUID> toggle = new ArrayList<>();
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
@@ -31,13 +37,12 @@ public class ScoreboardListener implements Listener {
         if (player != null && !toggle.contains(player.getUniqueId())) {
             try {
                 PlayerProfile profile = new PlayerProfile(plugin, player.getUniqueId());
-                ScoreboardListener.setScoreboard(player, profile);
+                setScoreboard(player, profile);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
     }
-    static ArrayList<UUID> toggle = new ArrayList<>();
 
     /**
      * Executed when a player toggles their scorebord with: /scoreboard toggle
@@ -56,9 +61,14 @@ public class ScoreboardListener implements Listener {
     /**
      * Creates scoreboard for a player
      * @param player
+     * @param profile
      */
     public static void setScoreboard(Player player, PlayerProfile profile) {
 
+        // Get the original scoreboard or create a new one if it doesn't exist
+        Scoreboard originalScoreboard = originalScoreboards.getOrDefault(player.getUniqueId(), Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard());
+
+        // Create a new scoreboard for the player
         Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         Objective obj = scoreboard.registerNewObjective("lobby", "lorem");
 
@@ -83,14 +93,17 @@ public class ScoreboardListener implements Listener {
 
         empty.setScore(6);
 
-        updateScoreboard(player, profile);
+        originalScoreboards.put(player.getUniqueId(), scoreboard);
+        player.setScoreboard(scoreboard);
     }
     public static void updateScoreboard(Player player, PlayerProfile profile) {
         Scoreboard scoreboard = player.getScoreboard();
         Objective obj = scoreboard.getObjective("lobby");
 
         if (obj != null) {
-            obj.getScore(ChatColor.WHITE + "Saldo: " + profile.getBalance()).setScore(5);
+            // Find the existing score for balance and update it
+            Score balanceScore = obj.getScore(ChatColor.WHITE + "Saldo: " + profile.getBalance());
+            balanceScore.setScore(5);
         }
     }
 }
