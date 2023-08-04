@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class Lobby extends JavaPlugin {
 
-    private SQL SQL;
+    private SQL sql;
     private PlayerManager playerManager;
 
     private ServerSelector serverSelector;
@@ -25,14 +25,14 @@ public class Lobby extends JavaPlugin {
     public void onEnable() {
         getLogger().info("Lobby plugin enabled.");
 
-        SQL = new SQL();
+        sql = new SQL();
         try {
-            SQL.connect();
+            sql.connect();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Lobby | Database connected: " + SQL.isConnected());
+        System.out.println("Lobby | Database connected: " + sql.isConnected());
 
         Objects.requireNonNull(getCommand("saldo")).setExecutor(new BalanceCommand(this));
         Objects.requireNonNull(getCommand("scoreboard")).setExecutor(new ScoreboardCommand(this));
@@ -48,10 +48,10 @@ public class Lobby extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Lobby is disabled");
-        SQL.disconnect();
+        sql.disconnect();
     }
 
     public PlayerManager getPlayerManager() { return playerManager; }
 
-    public SQL getDatabase() { return SQL; }
+    public SQL getDatabase() { return sql; }
 }

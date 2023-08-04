@@ -26,13 +26,17 @@ public class ServerClickListener implements Listener {
     }
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+
+        if (event.getHand() != EquipmentSlot.HAND || event.getItem() == null) {
+            return;
+        }
+
         Player player = event.getPlayer();
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (event.getHand() == EquipmentSlot.HAND && event.getItem() != null) {
-                if (event.getItem().equals(ServerSelector.serverSelector)) {
-                    ServerSelector.ServerSelectorMenu(player);
-                }
-            }
+        if (event.getItem().equals(ServerSelector.serverSelector)) {
+            ServerSelector.ServerSelectorMenu(player);
         }
     }
     @EventHandler
