@@ -69,8 +69,16 @@ public class ScoreboardListener implements Listener {
 
         empty.setScore(4);
 
-        Score playerMoney = obj.getScore(ChatColor.WHITE + "Saldo: ");
-        playerMoney.setScore(5);
+        try {
+            PlayerProfile profile = new PlayerProfile(plugin, player);
+
+            int balance = profile.getBalance();
+
+            Score playerMoney = obj.getScore(ChatColor.WHITE + "Saldo: " + balance);
+            playerMoney.setScore(5);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         empty.setScore(6);
 

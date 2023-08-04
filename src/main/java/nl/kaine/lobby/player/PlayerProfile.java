@@ -1,6 +1,7 @@
 package nl.kaine.lobby.player;
 
 import nl.kaine.lobby.Lobby;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.sql.PreparedStatement;
@@ -19,12 +20,12 @@ public class PlayerProfile implements Listener{
     /**
      * Creates base player profile data in SQL database
      * @param lobby
-     * @param uuid
+     * @param player
      * @throws SQLException
      */
-    public PlayerProfile(Lobby lobby, UUID uuid) throws SQLException {
+    public PlayerProfile(Lobby lobby, Player player) throws SQLException {
         this.lobby = lobby;
-        this.uuid = uuid;
+        this.uuid = player.getUniqueId();
 
         PreparedStatement statement = lobby.getDatabase().getConnection().prepareStatement("SELECT rank, balance FROM player_info WHERE UUID = ?;");
         statement.setString(1, uuid.toString());

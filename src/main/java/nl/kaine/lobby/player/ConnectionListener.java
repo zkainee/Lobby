@@ -23,13 +23,13 @@ public class ConnectionListener implements Listener {
      */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Player playerProfile = e.getPlayer();
+        Player player = e.getPlayer();
 
         try {
-            PlayerProfile playerProfileData = new PlayerProfile(plugin, playerProfile.getUniqueId());
-            plugin.getPlayerManager().addPlayer(playerProfile.getUniqueId(), playerProfileData);
+            PlayerProfile playerProfile = new PlayerProfile(plugin, player);
+            plugin.getPlayerManager().addPlayer(player.getUniqueId(), playerProfile);
         } catch (SQLException ex) {
-            playerProfile.kickPlayer("Data niet ingeladen");
+            player.kickPlayer("Data niet ingeladen");
         }
     }
     @EventHandler
