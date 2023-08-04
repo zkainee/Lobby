@@ -1,6 +1,7 @@
 package nl.kaine.lobby.scoreboard;
 
 import nl.kaine.lobby.Lobby;
+import nl.kaine.lobby.player.PlayerProfile;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,10 +9,9 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class ScoreboardCommand implements CommandExecutor, TabCompleter {
 
@@ -45,7 +45,20 @@ public class ScoreboardCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("toggle")) {
-            ScoreboardListener.toggleScoreboard(Objects.requireNonNull(player));
+            if (player != null) {
+                try {
+                    PlayerProfile profile = null;
+                    try {
+                        profile = new PlayerProfile(plugin, player.getUniqueId());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ScoreboardListener.setScoreboard(player, profile);
+                    ScoreboardListener.toggleScoreboard(player, profile);
+                } catch (RuntimeException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         return true;
     }

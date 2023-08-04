@@ -1,6 +1,7 @@
-package nl.kaine.lobby.player;
+package nl.kaine.lobby.database;
 
 import nl.kaine.lobby.Lobby;
+import nl.kaine.lobby.player.PlayerProfile;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +27,7 @@ public class ConnectionListener implements Listener {
         Player player = e.getPlayer();
 
         try {
-            PlayerProfile playerProfile = new PlayerProfile(plugin, player);
+            PlayerProfile playerProfile = new PlayerProfile(plugin, player.getUniqueId());
             plugin.getPlayerManager().addPlayer(player.getUniqueId(), playerProfile);
         } catch (SQLException ex) {
             player.kickPlayer("Data niet ingeladen");

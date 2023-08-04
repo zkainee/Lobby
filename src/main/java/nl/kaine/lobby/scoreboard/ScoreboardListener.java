@@ -21,14 +21,21 @@ import java.util.UUID;
 public class ScoreboardListener implements Listener {
     //Instance plugin
     static Lobby plugin;
-    static PlayerProfile profile;
 
-    private static UUID uuid;
     public ScoreboardListener(Lobby plugin) { this.plugin = plugin; }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent joinEvent) {
-        toggleScoreboard(joinEvent.getPlayer());
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+
+        if (player != null && !toggle.contains(player.getUniqueId())) {
+            try {
+                PlayerProfile profile = new PlayerProfile(plugin, player.getUniqueId());
+                ScoreboardListener.setScoreboard(player, profile);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     static ArrayList<UUID> toggle = new ArrayList<>();
 
@@ -36,13 +43,13 @@ public class ScoreboardListener implements Listener {
      * Executed when a player toggles their scorebord with: /scoreboard toggle
      * @param player
      */
-    public static void toggleScoreboard(Player player) {
+    public static void toggleScoreboard(Player player, PlayerProfile profile) {
         if (toggle.contains(player.getUniqueId())) {
             toggle.remove(player.getUniqueId());
             player.setScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard());
         } else {
             toggle.add(player.getUniqueId());
-            setScoreboard(player);
+            setScoreboard(player, profile);
         }
     }
 
@@ -50,7 +57,7 @@ public class ScoreboardListener implements Listener {
      * Creates scoreboard for a player
      * @param player
      */
-    public static void setScoreboard(Player player) {
+    public static void setScoreboard(Player player, PlayerProfile profile) {
 
         Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         Objective obj = scoreboard.registerNewObjective("lobby", "lorem");
@@ -69,19 +76,21 @@ public class ScoreboardListener implements Listener {
 
         empty.setScore(4);
 
-        try {
-            PlayerProfile profile = new PlayerProfile(plugin, player);
+        int balance = profile.getBalance();
 
-            int balance = profile.getBalance();
-
-            Score playerMoney = obj.getScore(ChatColor.WHITE + "Saldo: " + balance);
-            playerMoney.setScore(5);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Score playerMoney = obj.getScore(ChatColor.WHITE + "Saldo: " + balance);
+        playerMoney.setScore(5);
 
         empty.setScore(6);
 
-        player.setScoreboard(scoreboard);
+        updateScoreboard(player, profile);
+    }
+    public static void updateScoreboard(Player player, PlayerProfile profile) {
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective obj = scoreboard.getObjective("lobby");
+
+        if (obj != null) {
+            obj.getScore(ChatColor.WHITE + "Saldo: " + profile.getBalance()).setScore(5);
+        }
     }
 }

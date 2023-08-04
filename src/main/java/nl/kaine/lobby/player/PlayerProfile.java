@@ -1,7 +1,6 @@
 package nl.kaine.lobby.player;
 
 import nl.kaine.lobby.Lobby;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.sql.PreparedStatement;
@@ -20,12 +19,12 @@ public class PlayerProfile implements Listener{
     /**
      * Creates base player profile data in SQL database
      * @param lobby
-     * @param player
+     * @param uuid
      * @throws SQLException
      */
-    public PlayerProfile(Lobby lobby, Player player) throws SQLException {
+    public PlayerProfile(Lobby lobby, UUID uuid) throws SQLException {
         this.lobby = lobby;
-        this.uuid = player.getUniqueId();
+        this.uuid = uuid;
 
         PreparedStatement statement = lobby.getDatabase().getConnection().prepareStatement("SELECT rank, balance FROM player_info WHERE UUID = ?;");
         statement.setString(1, uuid.toString());
@@ -49,8 +48,10 @@ public class PlayerProfile implements Listener{
     public void setRank(String rank) {
         this.rank = rank;
         try {
-            PreparedStatement statement = lobby.getDatabase().getConnection().prepareStatement("UPDATE player_info SET rank '" + rank + "'WHERE uuid = '" + uuid + "';");
-            statement.executeQuery();
+            PreparedStatement statement = lobby.getDatabase().getConnection().prepareStatement("UPDATE player_info SET rank = ? WHERE uuid = ?");
+            statement.setString(1, rank);
+            statement.setString(2, uuid.toString());
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,8 +60,10 @@ public class PlayerProfile implements Listener{
         this.balance = balance;
 
         try {
-            PreparedStatement statement = lobby.getDatabase().getConnection().prepareStatement("UPDATE player_info SET balance " + balance + "WHERE uuid = '" + uuid + "';");
-            statement.executeQuery();
+            PreparedStatement statement = lobby.getDatabase().getConnection().prepareStatement("UPDATE player_info SET balance = ? WHERE uuid = ?");
+            statement.setInt(1, balance);
+            statement.setString(2, uuid.toString());
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

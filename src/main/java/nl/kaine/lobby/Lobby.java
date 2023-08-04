@@ -1,7 +1,7 @@
 package nl.kaine.lobby;
 
 import nl.kaine.lobby.database.SQL;
-import nl.kaine.lobby.player.ConnectionListener;
+import nl.kaine.lobby.database.ConnectionListener;
 import nl.kaine.lobby.player.PlayerManager;
 import nl.kaine.lobby.player.balance.BalanceCommand;
 import nl.kaine.lobby.scoreboard.ScoreboardCommand;
