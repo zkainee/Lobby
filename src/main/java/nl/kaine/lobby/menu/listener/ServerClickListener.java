@@ -50,13 +50,7 @@ public class ServerClickListener implements Listener {
             event.setCancelled(true);
 
             switch (event.getRawSlot()) {
-                case 11:
-                    break;
-                case 13:
-                    break;
-                case 15:
-                    break;
-                case 26:
+                case 11, 13, 15, 26:
                     break;
             }
         }
